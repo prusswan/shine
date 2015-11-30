@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   # root 'welcome#index'
   root 'dashboard#index'
 
+  get "angular_test", to: "angular_test#index"
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
