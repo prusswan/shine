@@ -43,4 +43,6 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
 
   gem 'rspec-rails'
+  gem 'poltergeist'
+  gem 'database_cleaner'
 end
