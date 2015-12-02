@@ -17,6 +17,10 @@ app.config(['$routeProvider', function($routeProvider){
   });
 }]);
 
+app.config(['$httpProvider', function($httpProvider){
+  $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
+}]);
+
 app.controller("CustomerSearchController", ['$scope', '$http', '$location', function($scope, $http, $location) {
   $scope.customers = [];
 
@@ -67,14 +71,26 @@ app.controller("CustomerSearchController", ['$scope', '$http', '$location', func
 app.controller("CustomerDetailController", ["$scope","$routeParams","$resource",
   function($scope , $routeParams , $resource) {
     $scope.customerId = $routeParams.id;
-    var Customer = $resource('/customers/:customerId.json');
+    var Customer = $resource('/customers/:customerId.json',
+      {"customerId": "@customer_id"},
+      { "save": { "method": "PUT" }}
+    );
 
     $scope.customer = Customer.get({ "customerId": $scope.customerId});
     // alert("AJAX Call Initiated!");
 
     $scope.save = function() {
       if ($scope.form.$valid) {
-        alert("Save!");
+        $scope.customer.$save(
+          function() {
+            $scope.form.$setPristine();
+            $scope.form.$setUntouched();
+            alert("Save Successful!");
+          },
+          function() {
+            alert("Save Failed :(");
+          }
+        );
       }
     }
   }
