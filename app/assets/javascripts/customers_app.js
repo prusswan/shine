@@ -2,6 +2,7 @@ var app = angular.module('customers',
   [
     'ngRoute',
     'ngResource',
+    'ngMessages',
     'templates'
   ]
 );
@@ -70,6 +71,12 @@ app.controller("CustomerDetailController", ["$scope","$routeParams","$resource",
 
     $scope.customer = Customer.get({ "customerId": $scope.customerId});
     // alert("AJAX Call Initiated!");
+
+    $scope.save = function() {
+      if ($scope.form.$valid) {
+        alert("Save!");
+      }
+    }
   }
 ]);
 
