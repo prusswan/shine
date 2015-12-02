@@ -65,10 +65,10 @@ app.controller("CustomerSearchController", ['$scope', '$http', '$location', func
 
 app.controller("CustomerDetailController", ["$scope","$routeParams","$resource",
   function($scope , $routeParams , $resource) {
-    var customerId = $routeParams.id;
+    $scope.customerId = $routeParams.id;
     var Customer = $resource('/customers/:customerId.json');
 
-    $scope.customer = Customer.get({ "customerId": customerId});
+    $scope.customer = Customer.get({ "customerId": $scope.customerId});
     // alert("AJAX Call Initiated!");
   }
 ]);
@@ -77,6 +77,11 @@ app.controller("CustomerCreditCardController", [
   "$scope","$resource",
   function($scope , $resource) {
     var CreditCardInfo = $resource('/fake_billing.json');
-    $scope.creditCard = CreditCardInfo.get({ "cardholder_id": 1234});
+
+    $scope.setCardholderId = function(cardholderId) {
+      $scope.creditCard = CreditCardInfo.get(
+        {"cardholder_id": cardholderId}
+      );
+    }
   }
 ]);
